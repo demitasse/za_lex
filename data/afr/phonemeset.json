@@ -48,6 +48,7 @@
 	      },
     "syllable_marker": ".",
     "syllable_features": ["0", "1", "2"],
+    "syllable_feature_default": "0",
     "silence_symbol": "pau",
     "closure_symbol": "paucl"
 }
