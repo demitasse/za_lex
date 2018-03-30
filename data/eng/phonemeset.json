@@ -44,6 +44,7 @@
                "ʒ" : ["consonant", "mn_fricative", "pl_post-alveolar", "voiced"],
                "θ" : ["consonant", "mn_fricative", "pl_dental"]
 	      },
-    "phone_silence": "pau",
-    "phone_closure": "paucl"
+    "syllable_marker": ".",
+    "silence_symbol": "pau",
+    "closure_symbol": "paucl",
 }

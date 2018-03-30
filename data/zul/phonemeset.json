@@ -47,8 +47,6 @@
                "ɔ"      : ["vowel", "syllabic", "dur_short", "ht_mid", "ps_back", "ar_rounded"],
 	       "u"      : ["vowel", "syllabic", "dur_short", "ht_high", "ps_back", "ar_rounded"]
 	      },
-    "phone_silence": "pau",
-    "phone_closure": "paucl",
     "phone_w": "w",
     "phones_nN": ["n", "ŋ"],
     "phone_J": "ɲ",
@@ -69,5 +67,8 @@
 				   ["pʼ", "r"], ["pʼ", "l"],
 				   ["tʼ", "r"], ["tʰ", "r"],
 				   ["s", "k"], ["s", "kʰ"], ["s", "tʼ"], ["s", "tʰ"]],
-    "clusters_foreign_CCC_onsets": [["s", "tʼ", "r"]]
+    "clusters_foreign_CCC_onsets": [["s", "tʼ", "r"]],
+    "syllable_marker": ".",
+    "silence_symbol": "pau",
+    "closure_symbol": "paucl",
 }

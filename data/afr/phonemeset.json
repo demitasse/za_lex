@@ -46,6 +46,8 @@
 	       "y" : ["vowel", "sonorant", "syllabic", "dur_short", "ht_high", "ps_front"],
 	       "z" : ["consonant", "mn_fricative", "mn_strident", "pl_alveolar", "voiced"]
 	      },
-    "phone_silence": "pau",
-    "phone_closure": "paucl"
+    "syllable_marker": ".",
+    "syllable_features": ["0", "1", "2"],
+    "silence_symbol": "pau",
+    "closure_symbol": "paucl",
 }
