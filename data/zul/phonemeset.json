@@ -70,5 +70,5 @@
     "clusters_foreign_CCC_onsets": [["s", "tʼ", "r"]],
     "syllable_marker": ".",
     "silence_symbol": "pau",
-    "closure_symbol": "paucl",
+    "closure_symbol": "paucl"
 }
