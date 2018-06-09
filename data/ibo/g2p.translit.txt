@@ -1,0 +1,54 @@
+# Pronunciation rules for Igbo.
+#
+# Author: dvn.demitasse@gmail.com (Daniel van Niekerk)
+
+# These rules transcribe Igbo written with the Ọnwụ orthography to
+# phoneme representation. Tones are not handled here and
+# tone-indicating diacritics (acute and grave) will be removed from
+# the input if present.
+
+::Lower;
+
+::NFD;
+::[\u0300\u0301] Remove;
+::NFC;
+
+############################## STANDARD RULES
+ch → t͡ʃ;
+gb → ɡ͡ɓ;
+gh → ɣ;
+gw → ɡʷ;
+kp → k͡p;
+kw → kʷ;
+nw → ŋʷ;
+ny → ɲ;
+sh → ʃ;
+
+a → a;
+e → e;
+i → i;
+ị → ɪ;
+o → o;
+ọ → ɔ;
+u → u;
+ụ → ʊ;
+
+b → b;
+d → d;
+f → f;
+g → ɡ;
+h → ɦ;
+j → d͡ʒ;
+k → k;
+l → l;
+m → m;
+n → n;
+ṅ → ŋ;
+p → p;
+r → ɹ;
+s → s;
+t → t;
+v → v;
+w → w;
+y → j;
+z → z;
