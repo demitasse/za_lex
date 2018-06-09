@@ -34,8 +34,8 @@
         "ʃ" : ["consonant", "mn_fricative", "pl_post-alveolar"],
         "t" : ["consonant", "mn_plosive", "pl_alveolar"],
         "v" : ["consonant", "mn_fricative", "pl_labiodental", "voiced"],
-        "w" : ["consonant", "mn_approximant", "mn_glide", "pl_labial", "pl_velar", "voiced"],
-        "j" : ["consonant", "mn_approximant", "mn_glide", "pl_palatal", "voiced"],
+        "w" : ["consonant", "mn_approximant", "pl_labial", "pl_velar", "voiced"],
+        "j" : ["consonant", "mn_approximant", "pl_palatal", "voiced"],
         "z" : ["consonant", "mn_fricative", "pl_alveolar", "voiced"]
     },
     "syllable_marker": ".",
