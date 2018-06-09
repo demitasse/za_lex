@@ -3,14 +3,14 @@
 # Author: dvn.demitasse@gmail.com (Daniel van Niekerk)
 
 # These rules transcribe Igbo written with the Ọnwụ orthography to
-# phoneme representation. Tones are not handled here and
-# tone-indicating diacritics (acute and grave) will be removed from
+# phoneme representation. Tones are not handled here and tone-
+# indicating diacritics (acute, grave and macron) will be removed from
 # the input if present.
 
 ::Lower;
 
 ::NFD;
-::[\u0300\u0301] Remove;
+::[\u0300\u0301\u0304] Remove;
 ::NFC;
 
 ############################## STANDARD RULES
