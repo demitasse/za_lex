@@ -3,7 +3,6 @@
 """Train a diacritic restoration model -- training text (UTF-8)
    received from STDIN and model file output on STDOUT.
 """
-from __future__ import unicode_literals, division, print_function #Py2
 
 __author__ = "Daniel van Niekerk"
 __email__ = "dvn.demitasse@gmail.com"
@@ -14,7 +13,6 @@ import unicodedata
 import pickle
 import itertools
 import argparse
-import codecs
 import json
 
 import numpy as np
@@ -67,7 +65,7 @@ class GraphClassifDiacritiser(Diacritiser):
         self.tgraphs = set(tgraphs) #target graphs (which may take diacritics)
         assert self.tgraphs.issubset(self.graphs)
         self.diacs = dict((g, i+1) for i, g in enumerate(sorted(set(diacs))))
-        self._diacs = dict([(v, k) for k, v in self.diacs.iteritems()])
+        self._diacs = dict([(v, k) for k, v in self.diacs.items()])
         self.n = int(n)
         assert self.n >= 1
         self.vcfeats = bool(vcfeats)
@@ -141,13 +139,13 @@ class GraphClassifDiacritiser(Diacritiser):
             #get Y's
             normline = unicodedata.normalize("NFD", self._normline(line, strip_diacs=False))
             if DEBUG:
-                print(normline.encode("utf-8"), file=sys.stderr)
+                print(normline, file=sys.stderr)
             for i in self._target_idxs(normline):
                 Y.append(self._idx_to_target(i, normline))
             #get X's
             normline = self._normline(line, strip_diacs=True)
             if DEBUG:
-                print(normline.encode("utf-8"), file=sys.stderr)
+                print(normline, file=sys.stderr)
             for i in self._target_idxs(normline):
                 X.append(self._idx_to_feat(i, normline))
             assert len(Y) == len(X)
@@ -184,12 +182,12 @@ class GraphClassifDiacritiser(Diacritiser):
         #Input idxs for mapping back
         templateline = self.diacre.sub("", unicodedata.normalize("NFKD", line))
         if DEBUG:
-            print(templateline.encode("utf-8"), file=sys.stderr)
+            print(templateline, file=sys.stderr)
         tmplidxs = self._target_idxs(templateline.lower())
         #get X's
         normline = self._normline(line, strip_diacs=True)
         if DEBUG:
-            print(normline.encode("utf-8"), file=sys.stderr)
+            print(normline, file=sys.stderr)
         normidxs = self._target_idxs(normline)
         assert len(tmplidxs) == len(normidxs)
         X = []
@@ -228,7 +226,7 @@ if __name__ == "__main__":
     parser.add_argument('--noxval', dest="xval", action="store_false", help="Don't report cross-validation score")
     args = parser.parse_args()
                          
-    with codecs.open(args.langdescr, encoding="utf-8") as infh:
+    with open(args.langdescr, encoding="utf-8") as infh:
         langdescr = json.load(infh)
     #Check that "diacritics" and "targetgraphs" are NFD:
     assert all([unicodedata.category(c) == "Mn" for c in langdescr["diacritics"]])
@@ -241,7 +239,7 @@ if __name__ == "__main__":
                                             args.context,
                                             args.vcfeats)
     #slurp and train
-    lines = [unicode(line, encoding="utf-8").strip() for line in sys.stdin]
+    lines = [line.strip() for line in sys.stdin]
     random.shuffle(lines)
     X, Y = d.train_preproc(lines)
     if args.xval:

@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 """ G2P implementation using ICU transliteration rules...
 """
-from __future__ import unicode_literals, division, print_function #Py2
 
 __author__ = "Daniel van Niekerk"
 __email__ = "dvn.demitasse@gmail.com"
@@ -34,7 +33,6 @@ class G2P_ICURules(object):
 
 if __name__ == "__main__":
     import sys
-    import codecs
     import json
     import argparse
 
@@ -44,15 +42,15 @@ if __name__ == "__main__":
     args = parser.parse_args()
         
     #load phones
-    with codecs.open(args.phonesetfile, encoding="utf-8") as infh:
+    with open(args.phonesetfile, encoding="utf-8") as infh:
         phoneset = json.load(infh)
     phones = list(phoneset["phones"].keys())
     assert not any(["|" in ph for ph in phones])
     #load rules
-    with codecs.open(args.rulesfile, encoding="utf-8") as infh:
+    with open(args.rulesfile, encoding="utf-8") as infh:
         rules = infh.read()
     #predict stdin
     g2p = G2P_ICURules(phones, rules)
     for line in sys.stdin:
-        word = unicode(line.strip(), encoding="utf-8")
-        print("{}\t{}".format(word, " ".join(g2p.predict_word(word))).encode("utf-8"))
+        word = line.strip()
+        print("{}\t{}".format(word, " ".join(g2p.predict_word(word))))

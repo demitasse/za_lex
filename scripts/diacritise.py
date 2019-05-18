@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 """Apply a diacritic restoration model
 """
-from __future__ import unicode_literals, division, print_function #Py2
 
 __author__ = "Daniel van Niekerk"
 __email__ = "dvn.demitasse@gmail.com"
@@ -24,9 +23,9 @@ if __name__ == "__main__":
         d = pickle.load(infh)
     
     for line in sys.stdin:
-        line = unicode(line, encoding="utf-8").strip()
+        line = line.strip()
 #        try:
-        print(d.diacritise(line).encode("utf-8"))
+        print(d.diacritise(line))
         # except Exception as e:
-        #     print("CONVERSION FAILED: '{}'".format(line).encode("utf-8"), file=sys.stderr)
+        #     print("CONVERSION FAILED: '{}'".format(line), file=sys.stderr)
         #     print(str(e), file=sys.stderr)

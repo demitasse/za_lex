@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 """This is the Sotho rule-based syllabification algorithm.
 """
-from __future__ import unicode_literals, division, print_function #Py2
 
 __author__ = "Daniel van Niekerk"
 __email__ = "dvn.demitasse@gmail.com"
@@ -44,11 +43,11 @@ class SothoSyllabifier(Syllabifier):
         """ We only explicitly check for Cw and Ch
         """
         if (cluster[1] == self.phone_w or cluster[1] == self.phone_hv) and any(isf(cluster[0]) for isf in [self.is_plosivelike, self.is_fricative, self.is_nasal, self.is_approximant, self.is_trill]):
-            #print("CC1:", "/".join(cluster).encode("utf-8"), sep="\t", file=sys.stderr)
+            #print("CC1:", "/".join(cluster), sep="\t", file=sys.stderr)
             return True
         elif consider_foreign and cluster in self.clusters_foreign_CC_onsets:
-            #print("CC5:", "/".join(cluster).encode("utf-8"), sep="\t", file=sys.stderr)
-            print("syllabify(): WARNING: foreign onset cluster: '{}'".format("".join(cluster)).encode("utf-8"), file=sys.stderr)
+            #print("CC5:", "/".join(cluster), sep="\t", file=sys.stderr)
+            print("syllabify(): WARNING: foreign onset cluster: '{}'".format("".join(cluster)), file=sys.stderr)
             return True
         return False
 
@@ -70,32 +69,32 @@ class SothoSyllabifier(Syllabifier):
                     bounds.append(ci + 1)
                     return
                 if cluster in self.clusters_foreign_CC_not_onsets:
-                    print("syllabify(): WARNING: foreign cluster was split: '{}' in '{}'".format("".join(cluster), "".join(phones)).encode("utf-8"), file=sys.stderr)
+                    print("syllabify(): WARNING: foreign cluster was split: '{}' in '{}'".format("".join(cluster), "".join(phones)), file=sys.stderr)
                     bounds.append(ci + 1) #VC.CV
                     return
                 #DEFAULT: V.CCV
-                print("syllabify(): WARNING: onset cluster not considered valid: '{}' in '{}'".format("".join(cluster),"".join(phones)).encode("utf-8"), file=sys.stderr)
+                print("syllabify(): WARNING: onset cluster not considered valid: '{}' in '{}'".format("".join(cluster),"".join(phones)), file=sys.stderr)
                 bounds.append(ci)
             elif len(cluster) == 3:
                 if self.is_syllabic(cluster[0]):
                     if self.is_valid_CC(cluster[1:]): #V.sC.CWV
                         pass
                     else:
-                        print("syllabify(): WARNING: onset cluster not considered valid: '{}' in '{}'".format("".join(cluster[1:]), "".join(phones)).encode("utf-8"), file=sys.stderr)
+                        print("syllabify(): WARNING: onset cluster not considered valid: '{}' in '{}'".format("".join(cluster[1:]), "".join(phones)), file=sys.stderr)
                     bounds.append(ci) 
                     bounds.append(ci + 1)
                     return
                 if cluster in self.clusters_foreign_CCC_onsets:
-                    print("syllabify(): WARNING: foreign syllable cluster: '{}' in '{}'".format("".join(cluster), "".join(phones)).encode("utf-8"), file=sys.stderr)
+                    print("syllabify(): WARNING: foreign syllable cluster: '{}' in '{}'".format("".join(cluster), "".join(phones)), file=sys.stderr)
                     bounds.append(ci) #V.CCCV
                 if cluster[1:] in self.clusters_foreign_CC_onsets:
-                    print("syllabify(): WARNING: foreign syllable cluster: '{}' in '{}'".format("".join(cluster[1:]), "".join(phones)).encode("utf-8"), file=sys.stderr)
+                    print("syllabify(): WARNING: foreign syllable cluster: '{}' in '{}'".format("".join(cluster[1:]), "".join(phones)), file=sys.stderr)
                     bounds.append(ci + 1) #VC.CCV  (foreign)
                     return
-                print("syllabify(): WARNING: onset cluster not considered valid: '{}' in '{}'".format("".join(cluster), "".join(phones)).encode("utf-8"), file=sys.stderr)
+                print("syllabify(): WARNING: onset cluster not considered valid: '{}' in '{}'".format("".join(cluster), "".join(phones)), file=sys.stderr)
                 bounds.append(ci) #V.CCCV
             else:
-                print("syllabify(): WARNING: unexpectedly long consonant cluster found: '{}' in '{}'".format("".join(cluster), "".join(phones)).encode("utf-8"), file=sys.stderr)                
+                print("syllabify(): WARNING: unexpectedly long consonant cluster found: '{}' in '{}'".format("".join(cluster), "".join(phones)), file=sys.stderr)                
                 if self.is_syllabic(cluster[0]):
                     #V.sC.*V
                     bounds.append(ci) 
@@ -127,10 +126,10 @@ class SothoSyllabifier(Syllabifier):
                 if len(cluster) == 1 and self.is_syllabic(cluster[0]):
                     bounds.append(ci)
                 else:
-                    print("syllabify(): WARNING: word-final cluster not considered valid: '{}' in '{}'".format("".join(cluster), "".join(phones)).encode("utf-8"), file=sys.stderr)
+                    print("syllabify(): WARNING: word-final cluster not considered valid: '{}' in '{}'".format("".join(cluster), "".join(phones)), file=sys.stderr)
 
         else:
-            print("syllabify(): WARNING: no vowels found in word '{}'".format("".join(phones)).encode("utf-8"), file=sys.stderr)
+            print("syllabify(): WARNING: no vowels found in word '{}'".format("".join(phones)), file=sys.stderr)
                 
         #Convert sylbounds to syllable lists
         sylls = []

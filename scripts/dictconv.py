@@ -2,9 +2,7 @@
 # -*- coding: utf-8 -*-
 """ Convert dictionary formats.
 """
-from __future__ import unicode_literals, division, print_function #Py2
-
-import os, sys, codecs, json, argparse, itertools
+import os, sys, json, argparse, itertools
 
 DEF_INFORMAT = "flat"
 DEF_OUTFORMAT = "nested"
@@ -27,7 +25,7 @@ def maybemap(ph, phmap=None):
         return phmap[ph]
 
 def parse_flat(line):
-    fields = unicode(line, encoding="utf-8").split()
+    fields = line.split()
     word, pos, stresspat, sylspec = fields[:4]
     assert len(stresspat) == len(sylspec)
     phones = fields[4:]
@@ -38,7 +36,7 @@ def print_flat(word, pos, stresspat, sylspec, phones, phonemap):
 
 
 def parse_nested(line, defstresstone):
-    fields = unicode(line, encoding="utf-8").split()
+    fields = line.split()
     word, pos = fields[:2]
     syms = fields[2:]
     syls = [[]]
@@ -86,14 +84,14 @@ if __name__ == "__main__":
     phonemap = None
     if args.outphonemap is not None:
         phonemap = {}
-        with codecs.open(args.outphonemap, encoding="utf-8") as infh:
+        with open(args.outphonemap, encoding="utf-8") as infh:
             for line in infh:
                 a, b = line.split()
                 if args.mapreverse:
                     a, b = (b, a)
                 phonemap[a] = b
 
-    with codecs.open(args.phoneset, encoding="utf-8") as infh:
+    with open(args.phoneset, encoding="utf-8") as infh:
         phset = json.load(infh)
 
     for line in sys.stdin:
@@ -104,8 +102,8 @@ if __name__ == "__main__":
         else:
             raise Exception("Invalid input format specified")
         if args.oformat == "flat":
-            print(print_flat(word, pos, stresspat, sylspec, phones, phonemap).encode("utf-8"))
+            print(print_flat(word, pos, stresspat, sylspec, phones, phonemap))
         elif args.oformat == "nested":
-            print(print_nested(word, pos, stresspat, sylspec, phones, phset, args.defstresstone, phonemap).encode("utf-8"))
+            print(print_nested(word, pos, stresspat, sylspec, phones, phset, args.defstresstone, phonemap))
         else:
             raise Exception("Invalid output format specified")

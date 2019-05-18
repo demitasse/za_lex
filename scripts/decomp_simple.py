@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 """Recursive splitting of words for decompounding
 """
-from __future__ import unicode_literals, division, print_function #Py2
 
 __author__ = "Daniel van Niekerk"
 __email__ = "dvn.demitasse@gmail.com"
@@ -190,19 +189,18 @@ class SyllabDecompounder(SimpleDecompounder):
 
     
 def test(wordlistfn, compword):
-    import codecs
-    with codecs.open(wordlistfn, encoding="utf-8") as infh:
+    with open(wordlistfn, encoding="utf-8") as infh:
         wordlist = infh.read().split()
     csplitter = SimpleDecompounder(wordlist)
     splitform = csplitter.decompound(compword)
     return splitform
     
 if __name__ == "__main__":
-    import sys, codecs
+    import sys
 
-    with codecs.open(sys.argv[1], encoding="utf-8") as infh:
+    with open(sys.argv[1], encoding="utf-8") as infh:
         decomp = SimpleDecompounder(infh.read().split())
 
     for line in sys.stdin:
-        word = unicode(line.strip(), encoding="utf-8")
-        print("\t".join([word, "-".join(decomp(word))]).encode("utf-8"))
+        word = line.strip()
+        print("\t".join([word, "-".join(decomp(word))]))

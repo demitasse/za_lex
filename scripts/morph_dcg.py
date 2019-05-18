@@ -9,13 +9,12 @@
    The 'simpleguess' option selects a parse which minimizes the
    open-class portion of the word.
 """
-from __future__ import unicode_literals, print_function, division
 
 __author__ = "Daniel van Niekerk"
 __email__ = "dvn.demitasse@gmail.com"
 
 import os, sys
-import codecs, pickle
+import pickle
 import re
 from collections import defaultdict
 import tempfile
@@ -46,13 +45,13 @@ def make_symmaps(dcg, graphs, othersyms):
     syms = set(graphs)
     syms.update([e for e in othersyms if e != EPS])
     for k in ["terminals", "nonterminals"]:
-        for kk, v in dcg[k].iteritems():
+        for kk, v in dcg[k].items():
             syms.add(kk)
             for seq in v:
                 syms.update(seq)
     itos = dict(zip(range(1, len(syms)+1), sorted(syms)))
     itos[0] = EPS
-    stoi = dict((v, k) for k, v in itos.iteritems())
+    stoi = dict((v, k) for k, v in itos.items())
     return itos, stoi
 
 
@@ -60,7 +59,7 @@ def get_undefsyms(dcg, stoi):
     """Determine which symbols are undefined"""
     defined = set(list(dcg["nonterminals"]) + list(dcg["terminals"]))
     targets = set()
-    for k, v in dcg["nonterminals"].iteritems():
+    for k, v in dcg["nonterminals"].items():
         for vv in v:
             targets.update(vv)
     return list(targets.difference(defined))
@@ -110,7 +109,7 @@ def save_dot(fst, stoi=None, fn="_fst.dot"):
     fst = fst.copy()
     if stoi is not None:
         st = wfst.SymbolTable()
-        for k, v in stoi.iteritems():
+        for k, v in stoi.items():
             st.add_symbol(k.encode("utf-8"), v)
             fst.set_input_symbols(st)
             fst.set_output_symbols(st)
@@ -181,9 +180,9 @@ class Morphparse_DCG(Morphparse):
         self.itos, self.stoi = make_symmaps(dcg, descr["graphs"], othersyms)
 
         # #DEBUG DUMP SYMTABLES
-        # with codecs.open("tmp/stoi.pickle", "w", encoding="utf-8") as outfh:
+        # with open("tmp/stoi.pickle", "w", encoding="utf-8") as outfh:
         #     pickle.dump(self.stoi, outfh)
-        # with codecs.open("tmp/itos.pickle", "w", encoding="utf-8") as outfh:
+        # with open("tmp/itos.pickle", "w", encoding="utf-8") as outfh:
         #     pickle.dump(self.itos, outfh)
 
         termfsts = make_termfsts(dcg, descr["graphs"], self.stoi)
@@ -206,7 +205,7 @@ class Morphparse_DCG(Morphparse):
 
             #replace non-terminals
             replace_pairs = [(self.stoi[pos], fstcoll.pop(pos))]
-            for k, v in fstcoll.iteritems():
+            for k, v in fstcoll.items():
                 replace_pairs.append((self.stoi[k], v))
             fst = wfst.replace(replace_pairs, call_arc_labeling="both")
             fst.rmepsilon()
@@ -230,7 +229,7 @@ class Morphparse_DCG(Morphparse):
 
             #replace terminals
             replace_pairs = [(self.stoi[pos], fst)]
-            for k, v in termfsts.iteritems():
+            for k, v in termfsts.items():
                 replace_pairs.append((self.stoi[k], v))
             fst = wfst.replace(replace_pairs, call_arc_labeling="both")
             fst.rmepsilon()
@@ -242,7 +241,7 @@ class Morphparse_DCG(Morphparse):
 
             #rename symbols (simplify) JUST FOR DEBUGGING
             if pos in descr["renamesyms"] and descr["renamesyms"][pos]:
-                labpairs = map(lambda x: (self.stoi[x[0]], self.stoi[x[1]]), descr["renamesyms"][pos])
+                labpairs = [(self.stoi[x[0]], self.stoi[x[1]]) for x in descr["renamesyms"][pos]]
                 fst.relabel_pairs(opairs=labpairs, ipairs=labpairs)
             fst.rmepsilon()
             fst = wfst.determinize(fst)
@@ -255,11 +254,11 @@ class Morphparse_DCG(Morphparse):
             #split I/O symbols by convention here: input symbols are single characters:
             #Input syms (relabel outputs to EPS):
             syms = [k for k in self.stoi if len(k) == 1]
-            labpairs = map(lambda x: (self.stoi[x], self.stoi[EPS]), syms)
+            labpairs = [(self.stoi[x], self.stoi[EPS]) for x in syms]
             fst.relabel_pairs(opairs=labpairs)
             #Output syms (relabel inputs to EPS):
             syms = [k for k in self.stoi if len(k) != 1]
-            labpairs = map(lambda x: (self.stoi[x], self.stoi[EPS]), syms)
+            labpairs = [(self.stoi[x], self.stoi[EPS]) for x in syms]
             fst.relabel_pairs(ipairs=labpairs)
             # #DEBUG DUMP FST
             # save_dot(fst, self.stoi, "tmp/"+pos+"_final.dot")
@@ -317,7 +316,7 @@ class Morphparse_DCG(Morphparse):
             paths = []
             dfs_walk(ofst, self.itos, ofst.start(), None, [], paths)
             for path in paths:
-                #print(" ".join([e[1] for e in path if e[1]]).encode("utf-8"))
+                #print(" ".join([e[1] for e in path if e[1]]))
                 parses.add("<{}>".format(pos) + path2parse(path))
         parses = [simpbounds(p, self.bounds) for p in sorted(parses)]
         return parses
@@ -375,26 +374,26 @@ def simple_nonstemlen(simpleparse):
 
         
 if __name__ == "__main__":
-    import sys, codecs, argparse, pickle, json
+    import sys, argparse, pickle, json
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('descrfn', metavar='DESCRFN', type=str, help="JSON file containing a description of how to interpret the DCG file (e.g. graphemes and POS categories etc.)")
     parser.add_argument('dcgfn', metavar='DCGFN', type=str, help="input DCG filename")
     parser.add_argument('--simpleguess', action='store_true', help="output only a single parse analogous to 'stemming' rather than a full morphological information and all possibilities")
     args = parser.parse_args()
     
-    with codecs.open(args.descrfn, encoding="utf-8") as infh:
+    with open(args.descrfn, encoding="utf-8") as infh:
         descr = json.load(infh)
-    with codecs.open(args.dcgfn, encoding="utf-8") as infh:
+    with open(args.dcgfn, encoding="utf-8") as infh:
         dcg = load_simpledcg(infh.read())
 
     morphparse = Morphparse_DCG(dcg, descr)
 
     for line in sys.stdin:
-        word = unicode(line, encoding="utf-8").strip()
+        word = line.strip()
         if args.simpleguess:
             parses = morphparse.parse_simple(word)
             parses.sort(key=lambda x: simple_nonstemlen(x), reverse=True)
             parse = parses[0]
-            print("{}\t{}".format(word, parse).encode("utf-8"))
+            print("{}\t{}".format(word, parse))
         else:
-            print("{}\t{}".format(word, " ".join(morphparse(word))).encode("utf-8"))
+            print("{}\t{}".format(word, " ".join(morphparse(word))))

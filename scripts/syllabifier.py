@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals, division, print_function #Py2
 
 __author__ = "Daniel van Niekerk"
 __email__ = "dvn.demitasse@gmail.com"
@@ -24,7 +23,6 @@ class Syllabifier(object):
         raise NotImplementedError
 
 def main(SylCls):
-    import codecs
     import json
     import argparse
 
@@ -37,12 +35,12 @@ def main(SylCls):
     args = parser.parse_args()
 
     #load phoneset
-    with codecs.open(args.phonesetfile, encoding="utf-8") as infh:
+    with open(args.phonesetfile, encoding="utf-8") as infh:
         phoneset = json.load(infh)
     syllabifier = SylCls(phoneset)
 
     for line in sys.stdin:
-        fields = unicode(line.strip(), encoding="utf-8").split()
+        fields = line.strip().split()
         word = fields[0]
         pronun = fields[1:]
         
@@ -51,8 +49,8 @@ def main(SylCls):
         stresspat = args.defstresstone * len(sylspec)
 
         if args.oformat == "flat":
-            print(dictconv.print_flat(word, "None", stresspat, sylspec, pronun, None).encode("utf-8"))
+            print(dictconv.print_flat(word, "None", stresspat, sylspec, pronun, None))
         elif args.oformat == "nested":
-            print(dictconv.print_nested(word, "None", stresspat, sylspec, pronun, phoneset, args.defstresstone, None).encode("utf-8"))
+            print(dictconv.print_nested(word, "None", stresspat, sylspec, pronun, phoneset, args.defstresstone, None))
         else:
             raise Exception("Invalid output format specified")

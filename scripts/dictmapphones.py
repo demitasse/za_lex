@@ -4,9 +4,7 @@
    file. Dictionaries via STDIO, with mapping file and options as
    arguments.
 """
-from __future__ import print_function, division, unicode_literals
-
-import sys, os, codecs
+import sys, os
 import argparse
 
 if __name__ == "__main__":
@@ -16,7 +14,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     phmap = {}
-    with codecs.open(args.mapfile, encoding="utf-8") as infh:
+    with open(args.mapfile, encoding="utf-8") as infh:
         for line in infh:
             a, b = line.split()
             if args.mapreverse:
@@ -25,7 +23,6 @@ if __name__ == "__main__":
 
     warnings = set()
     for line in sys.stdin:
-        line = unicode(line, encoding="utf-8")
         fields = line.split()
         word = fields[0]
         phones = fields[1:]
@@ -35,12 +32,12 @@ if __name__ == "__main__":
                 newphones.append(phmap[ph])
             except KeyError:
                 if not ph in warnings:
-                    print("WARNING: Did not map /{}/".format(ph).encode("utf-8"), file=sys.stderr)
-                    #print("\t{}".format(line.strip()).encode("utf-8"), file=sys.stderr)
+                    print("WARNING: Did not map /{}/".format(ph), file=sys.stderr)
+                    #print("\t{}".format(line.strip()), file=sys.stderr)
                     warnings.add(ph)
                 newphones.append(ph)
             if "\t" in line:
                 sep = "\t"
             else:
                 sep = " "
-        print("{}{}{}".format(word, sep, " ".join(newphones)).encode("utf-8"))
+        print("{}{}{}".format(word, sep, " ".join(newphones)))

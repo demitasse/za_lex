@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 """This is the Igbo rule-based syllabification algorithm.
 """
-from __future__ import unicode_literals, division, print_function #Py2
 
 __author__ = "Daniel van Niekerk"
 __email__ = "dvn.demitasse@gmail.com"
@@ -26,11 +25,11 @@ class IgboSyllabifier(Syllabifier):
                     bounds.append(ci + 1)
                     return
                 #DEFAULT: V.CCV
-                print("syllabify(): WARNING: onset cluster not considered valid: '{}' in '{}'".format("".join(cluster),"".join(phones)).encode("utf-8"), file=sys.stderr)
+                print("syllabify(): WARNING: onset cluster not considered valid: '{}' in '{}'".format("".join(cluster),"".join(phones)), file=sys.stderr)
                 bounds.append(ci)
             else:
                 print("syllabify(): WARNING: unexpectedly long consonant cluster found: '{}' in '{}'"\
-                      .format("".join(cluster), "".join(phones)).encode("utf-8"), file=sys.stderr)            
+                      .format("".join(cluster), "".join(phones)), file=sys.stderr)            
                 if self.is_syllabic(cluster[0]):
                     #V.sC.*V
                     bounds.append(ci) 
@@ -62,9 +61,9 @@ class IgboSyllabifier(Syllabifier):
                 if len(cluster) == 1 and self.is_syllabic(cluster[0]):
                     bounds.append(ci)
                 else:
-                    print("syllabify(): WARNING: word-final cluster not considered valid: '{}' in '{}'".format("".join(cluster), "".join(phones)).encode("utf-8"), file=sys.stderr)
+                    print("syllabify(): WARNING: word-final cluster not considered valid: '{}' in '{}'".format("".join(cluster), "".join(phones)), file=sys.stderr)
         else:
-            print("syllabify(): WARNING: no vowels found in word '{}'".format("".join(phones)).encode("utf-8"), file=sys.stderr)
+            print("syllabify(): WARNING: no vowels found in word '{}'".format("".join(phones)), file=sys.stderr)
                 
         #Convert sylbounds to syllable lists
         sylls = []

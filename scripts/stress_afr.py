@@ -5,7 +5,6 @@
    klemtoontoekenning in 'n grafeem-na-foneemstelsel vir Afrikaans" by
    E.W. Mouton.
 """
-from __future__ import unicode_literals, division, print_function #Py2
 
 __author__ = "Daniel van Niekerk"
 __email__ = "dvn.demitasse@gmail.com"
@@ -20,13 +19,13 @@ def matching_suffix(word, syl, suffs):
        may vary because of maximal onset principle and inflectional
        affixes)
     """
-    for g, p in suffs.iteritems():
+    for g, p in suffs.items():
         if word.endswith(g) and syl[-len(p):] == p:
             return True
     return False
 
 def matching_prefix(word, syl, prefs):
-    for g, p in prefs.iteritems():
+    for g, p in prefs.items():
         if word.startswith(g) and syl == p:
             return True
     return False
@@ -186,7 +185,7 @@ class LexStresser(object):
             if self.rweight[self._rimestruct(r1)] < self.rweight[self._rimestruct(r2)]:
                 return -1
         except KeyError:
-            #print("WARNING: Could not determine 'rime weight' (rimes: {} {})".format("".join(r1), "".join(r2)).encode("utf-8"), file=sys.stderr)
+            #print("WARNING: Could not determine 'rime weight' (rimes: {} {})".format("".join(r1), "".join(r2)), file=sys.stderr)
             pass
         #2: By "vowel weight"
         try:
@@ -197,7 +196,7 @@ class LexStresser(object):
             if self.vweight[v1] < self.vweight[v2]:
                 return -1
         except KeyError:
-            #print("WARNING: Could not determine 'vowel weight' difference (rimes: {} {})".format("".join(r1), "".join(r2)).encode("utf-8"), file=sys.stderr)
+            #print("WARNING: Could not determine 'vowel weight' difference (rimes: {} {})".format("".join(r1), "".join(r2)), file=sys.stderr)
             pass
         #3: Could not compare or syllables of equal weight
         return 0
@@ -207,7 +206,7 @@ class LexStresser(object):
         #1 - apply simple schwa rules for 2 and 3 syl cases if possible
         if self._num_scwa_in_syls(syls) > 0:
             if len(syls) == 2:
-                print("---------- Reël 4".encode("utf-8"), file=sys.stderr, end="")
+                print("---------- Reël 4", file=sys.stderr, end="")
                 if self.schwa in syls[1]:
                     print("a", file=sys.stderr)
                     return [1, 0]
@@ -216,7 +215,7 @@ class LexStresser(object):
                     return [0, 1]
             elif len(syls) == 3:
                 if self.schwa in syls[-1]:
-                    print("---------- Reël 1".encode("utf-8"), file=sys.stderr, end="")
+                    print("---------- Reël 1", file=sys.stderr, end="")
                     if self._onset(syls[-1]):
                         print("a", file=sys.stderr)
                         return [0, 1, 0]
@@ -225,7 +224,7 @@ class LexStresser(object):
                         return [1, 0, 0]
                 if self.schwa in syls[1]:
                     rimes = [self._rem_s(self._rime(s)) for s in syls]
-                    print("---------- Reël 2/3".encode("utf-8"), file=sys.stderr, end="")
+                    print("---------- Reël 2/3", file=sys.stderr, end="")
                     print("a", file=sys.stderr)
                     sylcmp = self._cmp_sylweight(rimes[0], rimes[2])
                     if sylcmp > 0:
@@ -241,7 +240,7 @@ class LexStresser(object):
             #§2.3.3.2 states that "schwa rules" should be
             #exhaustive for 3-syllable words
             rimes = [self._rem_s(self._rime(s)) for s in syls]
-            print("---------- not Reël 1-3 (schwa analog of 22/27)".encode("utf-8"), file=sys.stderr)
+            print("---------- not Reël 1-3 (schwa analog of 22/27)", file=sys.stderr)
             ####DEMIT1
             #sylcmp = self._cmp_sylweight(rimes[1], rimes[2])
             #if sylcmp > 0:
@@ -270,54 +269,54 @@ class LexStresser(object):
         if len(syls) == 2:
             vowels = self._get_vowels(syls)
             if len(self.diphthongs.intersection(vowels)) == 1:
-                print("---------- Reël 10".encode("utf-8"), file=sys.stderr)
+                print("---------- Reël 10", file=sys.stderr)
                 if vowels[0] in self.diphthongs:
                     return [1, 0]
                 else:
                     return [0, 1]
             rimestructs = [self._rime_rems_struct(s) for s in syls]
             if rimestructs[1] in self.superheavy:
-                print("---------- Reël 11".encode("utf-8"), file=sys.stderr)
+                print("---------- Reël 11", file=sys.stderr)
                 return [0, 1]
             else:
-                print("---------- Reël 12-16".encode("utf-8"), file=sys.stderr)
+                print("---------- Reël 12-16", file=sys.stderr)
                 return [1, 0]
         if len(syls) == 3:
             stresspatt = [0] * 3
             diphthongs = self._get_diphthongs(syls)
             if diphthongs:
-                print("---------- Reël 17".encode("utf-8"), file=sys.stderr)
+                print("---------- Reël 17", file=sys.stderr)
                 stresspatt[diphthongs[0]] = 1
                 return stresspatt
             rimestructs = [self._rime_rems_struct(s) for s in syls]
             if rimestructs[-1] in self.superheavy:
-                print("---------- Reël 18".encode("utf-8"), file=sys.stderr)
+                print("---------- Reël 18", file=sys.stderr)
                 stresspatt[-1] = 1
                 return stresspatt
             if rimestructs[-2:] == ["V", "VC"]:
-                print("---------- Reël 19/21".encode("utf-8"), file=sys.stderr)
+                print("---------- Reël 19/21", file=sys.stderr)
                 stresspatt[0] = 1
                 return stresspatt
-            print("---------- Reël 20/22".encode("utf-8"), file=sys.stderr)
+            print("---------- Reël 20/22", file=sys.stderr)
             stresspatt[1] = 1
             return stresspatt
         #Length > 3 syllables
         stresspatt = [0] * len(syls)
         diphthongs = self._get_diphthongs(syls)
         if diphthongs:
-            print("---------- Reël 23".encode("utf-8"), file=sys.stderr)
+            print("---------- Reël 23", file=sys.stderr)
             stresspatt[diphthongs[0]] = 1
             return stresspatt
         rimestructs = [self._rime_rems_struct(s) for s in syls]
         if rimestructs[-1] in self.superheavy:
-            print("---------- Reël 24/25".encode("utf-8"), file=sys.stderr)
+            print("---------- Reël 24/25", file=sys.stderr)
             stresspatt[-1] = 1
             return stresspatt
         if rimestructs[-2:] == ["V", "VC"]:
-            print("---------- Reël 26".encode("utf-8"), file=sys.stderr)
+            print("---------- Reël 26", file=sys.stderr)
             stresspatt[-3] = 1
             return stresspatt
-        print("---------- Reël 27".encode("utf-8"), file=sys.stderr)
+        print("---------- Reël 27", file=sys.stderr)
         stresspatt[-2] = 1
         return stresspatt
 
@@ -329,7 +328,7 @@ class LexStresser(object):
         try:
             assert len(syls) > 0
         except AssertionError:
-            print(word.encode("utf-8"), file=sys.stderr)
+            print(word, file=sys.stderr)
             raise
         if len(syls) < 2:
             return [0]
@@ -339,23 +338,23 @@ class LexStresser(object):
         ##########
         #Reël 6: Stress-carrying prefixes
         if matching_prefix(word, syls[0], self.sc_prefs):
-            print("---------- Reël 6".encode("utf-8"), file=sys.stderr)
+            print("---------- Reël 6", file=sys.stderr)
             stresspatt[0] = 1
             return stresspatt
 
         #Reël 7: Stress-carrying suffixes
         if matching_suffix(word, syls[-1], self.sc_suffs):
-            print("---------- Reël 7".encode("utf-8"), file=sys.stderr)
+            print("---------- Reël 7", file=sys.stderr)
             stresspatt[-1] = 1
             return stresspatt
 
         #Reël 5: Stress-drawing suffixes
         if matching_suffix(word, syls[-1], self.sd_suffs):
-            print("---------- Reël 5".encode("utf-8"), file=sys.stderr)
-            for i in reversed(range(len(syls)-1)): #DEMIT: This should perhaps be limited...
+            print("---------- Reël 5", file=sys.stderr)
+            for i in reversed(list(range(len(syls)-1))): #DEMIT: This should perhaps be limited...
                 #if not self.schwa in syls[i]:
                 #DEMIT: skip over these same suffixes?:
-                if not self.schwa in syls[i] and not syls[i] in self.sd_suffs.values():
+                if not self.schwa in syls[i] and not syls[i] in list(self.sd_suffs.values()):
                     stresspatt[i] = 1
                     return stresspatt
             #DEMIT: If all schwa, stress first syllable:
@@ -396,10 +395,10 @@ class LexStresserDecomp(LexStresser):
             #Now determine expected number of syllables in each wordpart
             #so as to split up syllables accordingly and feed to the
             #simple stress assigner
-            nvowels = map(len, map(self.graphvowelsre.findall, wordparts))
+            nvowels = list(map(len, map(self.graphvowelsre.findall, wordparts)))
             #print(nvowels, file=sys.stderr)
             if len(syls) != sum(nvowels) or 0 in nvowels:
-                print("_decomp(): nsyls and ngraphvowels missmatch for {} ({})".format(word, wordparts).encode("utf-8"), file=sys.stderr)
+                print("_decomp(): nsyls and ngraphvowels missmatch for {} ({})".format(word, wordparts), file=sys.stderr)
                 return [(word, syls)]
             parts = []
             i = 0
@@ -423,7 +422,6 @@ class LexStresserDecomp(LexStresser):
         
         
 if __name__ == "__main__":
-    import codecs
     import json
     import argparse
 
@@ -437,20 +435,20 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     #load and instantiate
-    with codecs.open(args.phonesetfile, encoding="utf-8") as infh:
+    with open(args.phonesetfile, encoding="utf-8") as infh:
         phoneset = json.load(infh)
     if args.decomp is None:
         lexstress = LexStresser(phoneset)
         #print(lexstress)
     else:
-        with codecs.open(args.decomp, encoding="utf-8") as infh:
+        with open(args.decomp, encoding="utf-8") as infh:
             wordlist = infh.read().split()
         lexstress = LexStresserDecomp(phoneset, wordlist)
         #print(lexstress)
 
     for line in sys.stdin:
         #input format is "flat" separate fields (current stress pattern is ignored/replaced)
-        fields = unicode(line.strip(), encoding="utf-8").split()
+        fields = line.strip().split()
         word, pos, stresspat, sylspec = fields[:4]
         pronun = fields[4:]
 
@@ -462,8 +460,8 @@ if __name__ == "__main__":
         stresspat = "".join(map(str, lexstress.get_stress_word(word, syls)))
 
         if args.oformat == "flat":
-            print(dictconv.print_flat(word, "None", stresspat, sylspec, pronun, None).encode("utf-8"))
+            print(dictconv.print_flat(word, "None", stresspat, sylspec, pronun, None))
         elif args.oformat == "nested":
-            print(dictconv.print_nested(word, "None", stresspat, sylspec, pronun, phoneset, args.defstresstone, None).encode("utf-8"))
+            print(dictconv.print_nested(word, "None", stresspat, sylspec, pronun, phoneset, args.defstresstone, None))
         else:
             raise Exception("Invalid output format specified")
