@@ -10,7 +10,6 @@ __email__ = "dvn.demitasse@gmail.com"
 import sys
 import re
 import unicodedata
-import pickle
 import itertools
 import argparse
 import json
@@ -216,6 +215,8 @@ class GraphClassifDiacritiser(Diacritiser):
         
 
 if __name__ == "__main__":
+    import sys
+    import pickle
     import random
     import diacritiser
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.ArgumentDefaultsHelpFormatter)
@@ -246,4 +247,4 @@ if __name__ == "__main__":
         d.cvscore(X, Y, numest=args.numest)
     d.train(X, Y, numest=args.numest)
 
-    print(pickle.dumps(d, protocol=pickle.HIGHEST_PROTOCOL))
+    sys.stdout.buffer.write(pickle.dumps(d, protocol=pickle.HIGHEST_PROTOCOL))

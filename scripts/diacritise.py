@@ -19,7 +19,7 @@ if __name__ == "__main__":
     parser.add_argument('modelfn', metavar='MODELFN', type=str, default=None, help="Load from model file (pickle format)")
     args = parser.parse_args()
 
-    with open(args.modelfn) as infh:
+    with open(args.modelfn, "rb") as infh:
         d = pickle.load(infh)
     
     for line in sys.stdin:

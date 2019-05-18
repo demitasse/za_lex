@@ -14,7 +14,6 @@ __author__ = "Daniel van Niekerk"
 __email__ = "dvn.demitasse@gmail.com"
 
 import os, sys
-import pickle
 import re
 from collections import defaultdict
 import tempfile
@@ -180,9 +179,9 @@ class Morphparse_DCG(Morphparse):
         self.itos, self.stoi = make_symmaps(dcg, descr["graphs"], othersyms)
 
         # #DEBUG DUMP SYMTABLES
-        # with open("tmp/stoi.pickle", "w", encoding="utf-8") as outfh:
+        # with open("tmp/stoi.pickle", "wb") as outfh:
         #     pickle.dump(self.stoi, outfh)
-        # with open("tmp/itos.pickle", "w", encoding="utf-8") as outfh:
+        # with open("tmp/itos.pickle", "wb") as outfh:
         #     pickle.dump(self.itos, outfh)
 
         termfsts = make_termfsts(dcg, descr["graphs"], self.stoi)
@@ -374,7 +373,7 @@ def simple_nonstemlen(simpleparse):
 
         
 if __name__ == "__main__":
-    import sys, argparse, pickle, json
+    import sys, argparse, json
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('descrfn', metavar='DESCRFN', type=str, help="JSON file containing a description of how to interpret the DCG file (e.g. graphemes and POS categories etc.)")
     parser.add_argument('dcgfn', metavar='DCGFN', type=str, help="input DCG filename")
