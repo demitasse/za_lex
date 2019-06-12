@@ -8,7 +8,7 @@
                "dʒ" : ["consonant", "mn_affricate", "mn_strident", "pl_alveolar", "pl_post-alveolar", "voiced"],
                "eɪ" : ["vowel", "sonorant", "syllabic", "diphthong"],
                "f" : ["consonant", "mn_fricative", "mn_strident", "pl_labiodental"],
-               "g" : ["consonant", "mn_plosive", "pl_velar", "voiced"],
+               "ɡ" : ["consonant", "mn_plosive", "pl_velar", "voiced"],
                "h" : ["consonant", "mn_fricative", "pl_glottal"],
                "i" : ["vowel", "sonorant", "syllabic", "dur_short", "ht_high", "ps_front"],
                "j" : ["consonant", "sonorant", "mn_approximant", "mn_glide", "pl_palatal", "voiced"],
