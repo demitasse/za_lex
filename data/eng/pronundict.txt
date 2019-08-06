@@ -361,6 +361,7 @@ chased None 0 4 ch ei s t
 chattering None 100 223 ch a t q r i ng
 chauffeur None 01 23 sh ou f qq r
 cheer None 0 3 ch iq r
+chelsea None 10 32 ch e l s i
 chemical None 100 223 k e m i k q l
 cherokee None 001 222 ch e r ou k ii
 chevrolet None 100 232 sh e v r u l ei
